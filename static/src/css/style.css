@@ -1,0 +1,51 @@
+
+*{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+body,html{
+width: 100%;height: 100%;
+  background: radial-gradient( circle, rgba(119, 13, 13, 0.82)54%, rgba(0, 0, 0, 0.6) 100% );
+}
+.db span{font-family:'DB';font-size:32px;color:green;}
+.is span{font-family:'IS';font-size:32px;color:red;}
+.mn span{font-family:'MN';font-size:32px;color:pink;}
+.pt span{font-family:'PT';font-size:32px;color:yellowgreen;}
+.tx span{font-family:'TX';font-size:32px;color:#9014c1;}
+.yb span{font-family:'YB';font-size:32px;color:block;}
+.main{
+width: 7.5rem;
+height: 100%;
+position: absolute;
+}
+.content-tit{
+	font-family:'DB';font-size:1.2rem;color:#de911a;
+	width: 7.5rem;
+	height: 3rem;
+	line-height: 1.5rem;
+	text-align: center;
+	margin-top: 3rem;
+}
+.time {
+	width: 100%;
+	height: 3rem;
+	font-size: 0.5rem;
+	color: #d99c3b;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	flex-direction:row;
+	flex-wrap:wrap;
+	text-align: center;
+}
+
+.time span {
+      padding: 0 .12rem;
+font-family:'DB';
+}
+.time code {
+     
+font-family:'TX';
+}
+

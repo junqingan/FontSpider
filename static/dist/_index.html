@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>xxxxx</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="browsermode" content="application">
+    <meta name="MobileOptimized" content="320">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+    <meta name="full-screen" content="yes">
+    <!-- <embed src="dist/images/wuyue.mp3" hidden="true" autostart="true" loop="true"> -->
+    <link rel="stylesheet" href="dist/css/ani.min.css">
+    <link rel="stylesheet" href="dist/css/style.min.css">
+    <script src="dist/js/lib/jquery.min.js"></script>
+    <script src="dist/js/lib/snowfall.jquery.min.js"></script>
+    <script src="dist/js/lib/snowfall.min.js"></script>
+    <script type="text/javascript">
+    (function(designW) {
+        var docEl = document.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function() {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                docEl.style.fontSize = 100 * (clientWidth / designW) + 'px';
+            };
+        if (!document.addEventListener) return;
+        recalc();
+        window.addEventListener(resizeEvt, recalc, false);
+        document.addEventListener('DOMContentLoaded', recalc, false);
+    })(750);
+    </script>
+	<style>
+		@font-face{	/*广告体*/
+		font-family:"DB";src:url("./font/DatBox.ttf") format("truetype");}
+		@font-face{	/*广告体*/
+		font-family:"IS";src:url("./font/Isabella.ttf") format("truetype");}
+		@font-face{	/*迷你简启体*/
+		font-family:"MN";src:url("./font/MNJQT.ttf") format("truetype");}
+		@font-face{	/*广告体*/
+		font-family:"PT";src:url("./font/PhonepadTwo.ttf") format("truetype");}
+		@font-face{	/*陈伟勋硬笔行楷字体*/
+		font-family:"TX";src:url("./font/tx.ttf") format("truetype");}
+		@font-face{	/*陈伟勋硬笔行楷字体*/
+		font-family:"YB";src:url("./font/YBXK.ttf") format("truetype");}
+	</style>
+	<link rel="stylesheet" href="./css/style.min.css">
+</head>
+<body>
+	<div class="main">
+		<h1 class="content-tit">New Year Countdown</h1>
+		<div class="time">
+		 <span id="d"> </span><span id="h"> </span><span id="m"> </span><span id="s"> </span>
+	</div>
+		<canvas width="100%" height="100%"></canvas>
+	</div>
+</body>
+
+<script>
+class Snowflake {
+  constructor() {
+    this.x = 0;
+    this.y = 0;
+    this.vx = 0;
+    this.vy = 0;
+    this.radius = 0;
+    this.alpha = 0;
+
+    this.reset();
+  }
+
+  reset() {
+    this.x = this.randBetween(0, window.innerWidth);
+    this.y = this.randBetween(0, -window.innerHeight);
+    this.vx = this.randBetween(-3, 3);
+    this.vy = this.randBetween(2, 5);
+    this.radius = this.randBetween(1, 4);
+    this.alpha = this.randBetween(0.1, 0.9);
+  }
+
+  randBetween(min, max) {
+    return min + Math.random() * (max - min);
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if (this.y + this.radius > window.innerHeight) {
+      this.reset();
+    }
+  }
+}
+
+class Snow {
+  constructor() {
+    this.canvas = document.createElement("canvas");
+    this.ctx = this.canvas.getContext("2d");
+
+    document.body.appendChild(this.canvas);
+
+    window.addEventListener("resize", () => this.onResize());
+    this.onResize();
+    this.updateBound = this.update.bind(this);
+    requestAnimationFrame(this.updateBound);
+
+    this.createSnowflakes();
+  }
+
+  onResize() {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+  }
+
+  createSnowflakes() {
+    const flakes = window.innerWidth / 2;
+
+    this.snowflakes = [];
+
+    for (let s = 0; s < flakes; s++) {
+      this.snowflakes.push(new Snowflake());
+    }
+  }
+
+  update() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    for (let flake of this.snowflakes) {
+      flake.update();
+
+      this.ctx.save();
+      this.ctx.fillStyle = "#fff";
+      this.ctx.beginPath();
+      this.ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 10);
+      this.ctx.closePath();
+      this.ctx.globalAlpha = flake.alpha;
+      this.ctx.fill();
+      this.ctx.restore();
+    }
+    requestAnimationFrame(this.updateBound);
+  }
+}
+
+new Snow();
+
+
+////////////////////////////////////////////////////////////
+
+// Simple CountDown Clock
+
+
+var startTime = new Date('2019-02-04 00:00:00');
+
+var render = function (id, data) {
+    document.getElementById(id).innerHTML = data.toString().split('').map(function (t) {
+        return '<code class="unit">' + t + '</code>';
+    }).join('');
+};
+
+var run = function () {
+    var time = startTime - new Date();
+    var d = 24 * 60 * 60 * 1000;
+    var h = 60 * 60 * 1000;
+    var m = 60 * 1000;
+    var s = 1000;
+
+ 	var cd = Math.floor(time / d) + '天';
+    var ch = Math.floor(time / h) + '时';
+    var cm = Math.floor(Math.floor(time % h / m)) + '分';
+    var cs = Math.floor(Math.floor(time % m / s)) + '秒';
+
+    render('d', cd);
+    render('h', ch);
+    render('m', cm);
+    render('s', cs);
+};
+
+setInterval(function() {
+    run();
+}, 500);
+</script>
+
+</html>
